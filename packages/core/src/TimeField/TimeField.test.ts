@@ -1044,7 +1044,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
       // Branch 111:1 — isNumberString false in handleHourSegmentKeydown (Backspace key)
       // Branch 125:0 (via deleteValue) — single-digit value → modelValue=undefined, segment=null
       const { user, hour } = setup({
-        timeFieldProps: { modelValue: new Time(9, 30, 0) },
+        timeFieldProps: { modelValue: new Temporal.PlainTime(9, 30, 0) },
       })
       // Segment is filled (no data-placeholder attribute when value is set)
       expect(hour).not.toHaveAttribute('data-placeholder')
@@ -1057,7 +1057,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
     it('backspace on a two-digit minute segment truncates to one digit', async () => {
       // deleteValue: str.length===2 > 1 → returns parseInt(str.slice(0,-1))
       const { user, getByTestId } = setup({
-        timeFieldProps: { modelValue: new Time(9, 30, 0), granularity: 'second' },
+        timeFieldProps: { modelValue: new Temporal.PlainTime(9, 30, 0), granularity: 'second' },
       })
       const minute = getByTestId('minute')
       expect(minute).not.toHaveAttribute('data-placeholder')
@@ -1072,7 +1072,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
     it('backspace on a single-digit second segment clears it to empty', async () => {
       // Branch 139:0 via deleteValue on single-digit second
       const { user, getByTestId } = setup({
-        timeFieldProps: { modelValue: new Time(9, 30, 5), granularity: 'second' },
+        timeFieldProps: { modelValue: new Temporal.PlainTime(9, 30, 5), granularity: 'second' },
       })
       const second = getByTestId('second')
       expect(second).not.toHaveAttribute('data-placeholder')
@@ -1141,7 +1141,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
     it('typing a first digit > 5 in minute auto-advances to next segment', async () => {
       // Branch 61:0 — updateMinuteOrSecond: num > maxStart (5) on first digit → moveToNext=true
       const { user, getByTestId } = setup({
-        timeFieldProps: { modelValue: new Time(9, 15, 0), granularity: 'second' },
+        timeFieldProps: { modelValue: new Temporal.PlainTime(9, 15, 0), granularity: 'second' },
       })
       const minute = getByTestId('minute')
       const second = getByTestId('second')
@@ -1158,7 +1158,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
       // Branch 65:0 equivalent in updateMinuteOrSecond but for hour
       const { user, hour, getByTestId } = setup({
         timeFieldProps: {
-          modelValue: new Time(1, 30, 0),
+          modelValue: new Temporal.PlainTime(1, 30, 0),
           hourCycle: 12,
         },
       })
@@ -1173,7 +1173,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
     it('typing two valid digits in minute advances to next segment', async () => {
       // Branch 63 false path (total <= 59) → moveToNext=true at the end (line 515)
       const { user, getByTestId } = setup({
-        timeFieldProps: { modelValue: new Time(9, 15, 0), granularity: 'second' },
+        timeFieldProps: { modelValue: new Temporal.PlainTime(9, 15, 0), granularity: 'second' },
       })
       const minute = getByTestId('minute')
       const second = getByTestId('second')
@@ -1190,7 +1190,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
       // Branch 71:0 — updateHour: num > maxStart (2 for max=24) on first digit → moveToNext=true
       const { user, hour, getByTestId } = setup({
         timeFieldProps: {
-          modelValue: new Time(9, 30, 0),
+          modelValue: new Temporal.PlainTime(9, 30, 0),
           hourCycle: 24,
         },
       })
@@ -1207,7 +1207,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
       // Branch 73:1 — num (5) > maxStart (2) → moveToNext=true
       const { user, hour, getByTestId } = setup({
         timeFieldProps: {
-          modelValue: new Time(9, 30, 0),
+          modelValue: new Temporal.PlainTime(9, 30, 0),
           hourCycle: 24,
         },
       })
@@ -1226,7 +1226,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
       // Branch 144:0 — inner if(dayPeriod === 'AM') true branch
       const { user, getByTestId, rerender } = setup({
         timeFieldProps: {
-          modelValue: new Time(9, 30, 0),
+          modelValue: new Temporal.PlainTime(9, 30, 0),
           granularity: 'second',
         },
         emits: {
@@ -1250,7 +1250,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
       // Branch 144:0 — inner if(dayPeriod === 'AM') true branch
       const { user, getByTestId, rerender } = setup({
         timeFieldProps: {
-          modelValue: new Time(9, 30, 0),
+          modelValue: new Temporal.PlainTime(9, 30, 0),
           granularity: 'second',
         },
         emits: {
@@ -1273,7 +1273,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
       // Branch 144:1 — inner if(dayPeriod === 'AM') is false → falls to lines 858-859 (set AM)
       const { user, getByTestId, rerender } = setup({
         timeFieldProps: {
-          modelValue: new Time(21, 30, 0), // 9 PM
+          modelValue: new Temporal.PlainTime(21, 30, 0), // 9 PM
           granularity: 'second',
         },
         emits: {
@@ -1296,7 +1296,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
       // Branch 147:1 — ['p','P'].includes(key) && dayPeriod !== 'PM' → false when already PM
       const { user, getByTestId } = setup({
         timeFieldProps: {
-          modelValue: new Time(21, 30, 0), // 9 PM
+          modelValue: new Temporal.PlainTime(21, 30, 0), // 9 PM
           granularity: 'second',
         },
       })
@@ -1314,7 +1314,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
       // Branch 162:0 — after hour snap, if (hour < 12) → set dayPeriod = 'AM'
       const { user, hour, getByTestId, rerender } = setup({
         timeFieldProps: {
-          modelValue: new CalendarDateTime(1980, 1, 20, 9, 0, 0, 0),
+          modelValue: new Temporal.PlainDateTime(1980, 1, 20, 9, 0, 0, 0),
           granularity: 'second',
           step: { hour: 6 },
           stepSnapping: true,
@@ -1345,7 +1345,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
       // Branch 163:0 — else if (hour) truthy branch → set dayPeriod = 'PM' when hour >= 12
       const { user, hour, getByTestId, rerender } = setup({
         timeFieldProps: {
-          modelValue: new CalendarDateTime(1980, 1, 20, 14, 0, 0, 0),
+          modelValue: new Temporal.PlainDateTime(1980, 1, 20, 14, 0, 0, 0),
           granularity: 'second',
           step: { hour: 6 },
           stepSnapping: true,
@@ -1380,7 +1380,7 @@ describe('useDateField – time segment characterization tests (coverage gaps)',
       // Covers the 'second' branch in handleSegmentFocusOut (third else-if at line 937)
       const { user, getByTestId, rerender } = setup({
         timeFieldProps: {
-          modelValue: new CalendarDateTime(1980, 1, 20, 12, 0, 0, 0),
+          modelValue: new Temporal.PlainDateTime(1980, 1, 20, 12, 0, 0, 0),
           granularity: 'second',
           step: { second: 15 },
           stepSnapping: true,

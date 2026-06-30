@@ -717,7 +717,7 @@ describe('dateField', async () => {
     function setupStepSnappingTest({
       step,
       stepSnapping,
-      modelValue = new CalendarDateTime(1980, 1, 20, 12, 0, 0, 0),
+      modelValue = new Temporal.PlainDateTime(1980, 1, 20, 12, 0, 0, 0),
       hourCycle,
     }: {
       step: DateFieldRootProps['step']
@@ -797,7 +797,7 @@ describe('dateField', async () => {
     it('snaps typed minute value down to the nearest step', async () => {
       const { user, getByTestId, rerender } = setup({
         dateFieldProps: {
-          modelValue: new CalendarDateTime(1980, 1, 20, 12, 0, 0, 0),
+          modelValue: new Temporal.PlainDateTime(1980, 1, 20, 12, 0, 0, 0),
           granularity: 'second',
           step: { minute: 15 },
           stepSnapping: true,
@@ -854,7 +854,7 @@ describe('dateField', async () => {
 
     it('snaps typed hour value to nearest step', async () => {
       const { user, getByTestId } = setupStepSnappingTest({
-        modelValue: new CalendarDateTime(1980, 1, 20, 0, 0, 0, 0),
+        modelValue: new Temporal.PlainDateTime(1980, 1, 20, 0, 0, 0, 0),
         hourCycle: 24,
         step: { hour: 4 },
         stepSnapping: true,
